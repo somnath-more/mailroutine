@@ -1,5 +1,6 @@
-:root {
-  color-scheme: light dark;
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
   font-family:
     Inter,
     ui-sans-serif,
@@ -11,18 +12,55 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --color-background: #f5f7fb;
+  --color-canvas: #f6f7fb;
   --color-surface: #ffffff;
-  --color-text: #172033;
-  --color-muted: #5c667a;
-  --color-border: #dfe4ee;
-  --color-accent: #335cff;
+  --color-surface-elevated: #ffffff;
+  --color-text: #182033;
+  --color-text-muted: #697386;
+  --color-border: #e3e7ef;
+  --color-brand: #4f46e5;
+  --color-brand-contrast: #ffffff;
+  --color-hover: #f0f2f7;
+  --color-focus: #6366f1;
   --color-success: #16835d;
-  --shadow-card: 0 24px 70px rgb(30 43 74 / 12%);
+  --color-danger: #c2415d;
+  --color-overlay: rgb(15 23 42 / 52%);
+  --shadow-card: 0 18px 55px rgb(30 41 59 / 10%);
+  --shadow-sidebar: 12px 0 36px rgb(30 41 59 / 12%);
+  --radius-small: 0.625rem;
+  --radius-medium: 0.875rem;
+  --radius-large: 1.25rem;
+  --sidebar-width: 17rem;
+  --header-height: 4.5rem;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #0c1220;
+  --color-surface: #111a2b;
+  --color-surface-elevated: #172237;
+  --color-text: #f3f6fc;
+  --color-text-muted: #a8b2c6;
+  --color-border: #29364d;
+  --color-brand: #9aa9ff;
+  --color-brand-contrast: #11162a;
+  --color-hover: #1d2a40;
+  --color-focus: #a7b3ff;
+  --color-success: #67d6ad;
+  --color-danger: #fb8ca3;
+  --color-overlay: rgb(0 0 0 / 68%);
+  --shadow-card: 0 18px 55px rgb(0 0 0 / 24%);
+  --shadow-sidebar: 12px 0 36px rgb(0 0 0 / 28%);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: var(--color-canvas);
 }
 
 body {
@@ -30,26 +68,45 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--color-text);
-  background:
-    radial-gradient(
-      circle at top left,
-      rgb(51 92 255 / 10%),
-      transparent 32rem
-    ),
-    var(--color-background);
+  background: var(--color-canvas);
 }
 
+body,
 button,
-a,
 input,
-textarea,
-select {
+select,
+textarea {
   font: inherit;
 }
 
+button,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+select {
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button:not(:disabled),
+select:not(:disabled) {
+  cursor: pointer;
+}
+
 :focus-visible {
-  outline: 3px solid var(--color-accent);
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
+}
+
+::selection {
+  color: var(--color-brand-contrast);
+  background: var(--color-brand);
 }
 
 .setup-shell {
@@ -63,22 +120,29 @@ select {
   width: min(100%, 42rem);
   padding: clamp(2rem, 7vw, 4.5rem);
   border: 1px solid var(--color-border);
-  border-radius: 1.5rem;
+  border-radius: var(--radius-large);
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
 }
 
 .eyebrow {
   margin: 0 0 0.75rem;
-  color: var(--color-accent);
+  color: var(--color-brand);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 750;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-h1 {
-  margin: 0;
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+.setup-card h1 {
+  margin-bottom: 0;
   font-size: clamp(3rem, 10vw, 5.5rem);
   line-height: 0.95;
   letter-spacing: -0.065em;
@@ -98,13 +162,12 @@ h1 {
   height: 0.65rem;
   border-radius: 999px;
   background: currentColor;
-  box-shadow: 0 0 0 0.3rem rgb(22 131 93 / 12%);
 }
 
 .summary {
   max-width: 34rem;
   margin: 1rem 0 0;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   font-size: 1.05rem;
   line-height: 1.7;
 }
@@ -122,20 +185,18 @@ h1 {
   padding: 0.45rem 0.75rem;
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 650;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #0c1220;
-    --color-surface: #131c2d;
-    --color-text: #f4f7ff;
-    --color-muted: #a9b4c8;
-    --color-border: #29354b;
-    --color-accent: #8ba4ff;
-    --color-success: #67d6ad;
-    --shadow-card: 0 24px 70px rgb(0 0 0 / 30%);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
