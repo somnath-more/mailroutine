@@ -24,6 +24,7 @@
 ### Task 1: Repository and PostgreSQL development foundation
 
 **Files:**
+
 - Create: `.editorconfig`
 - Create: `.gitignore`
 - Create: `.nvmrc`
@@ -32,6 +33,7 @@
 - Create: `infra/compose.yaml`
 
 **Interfaces:**
+
 - Consumes: Node 24 through nvm, Python 3.13 through uv, Docker Compose when present on the host.
 - Produces: ignored local environment files and a PostgreSQL service named `postgres` on configurable host port `5432`.
 
@@ -87,6 +89,7 @@ git commit -m "chore: add project development foundation"
 ### Task 2: FastAPI backend with test-first health endpoint
 
 **Files:**
+
 - Create: `backend/.env.example`
 - Create: `backend/README.md`
 - Create: `backend/pyproject.toml`
@@ -102,6 +105,7 @@ git commit -m "chore: add project development foundation"
 - Create: `backend/tests/test_health.py`
 
 **Interfaces:**
+
 - Consumes: environment keys `CAREERFLOW_APP_NAME` and `CAREERFLOW_ENVIRONMENT`.
 - Produces: `app.main.create_app(settings: Settings | None = None) -> FastAPI`, `app.main.app`, and `GET /api/v1/health` returning `{"status":"ok","service":"careerflow-api"}`.
 
@@ -111,7 +115,7 @@ Use the official uv installer if `uv` is unavailable, then run `uv python instal
 
 - [ ] **Step 2: Create the backend manifest and lock dependencies**
 
-Create a uv application requiring `>=3.13,<3.14`. Add runtime dependencies `fastapi`, `pydantic-settings`, and `uvicorn[standard]`. Add development dependencies `httpx`, `mypy`, `pytest`, and `ruff`. Configure pytest for `tests`, Ruff for Python 3.13 with 100-character lines, and mypy in strict mode for `app` and `tests`. Generate `backend/uv.lock`.
+Create a uv application requiring `>=3.13,<3.14`. Add runtime dependencies `fastapi`, `pydantic-settings`, and `uvicorn[standard]`. Add development dependencies `httpx2`, `anyio<4.15`, `mypy`, `pytest`, and `ruff`. The AnyIO cap is development-only and avoids an alias deprecated in AnyIO 4.15 that Starlette 1.6 still references in its test client. Configure pytest for `tests`, Ruff for Python 3.13 with 100-character lines, and mypy in strict mode for `app` and `tests`. Generate `backend/uv.lock`.
 
 - [ ] **Step 3: Write the failing health endpoint test**
 
@@ -213,6 +217,7 @@ git commit -m "feat: scaffold FastAPI backend"
 ### Task 3: React/Vite/TypeScript frontend with test-first startup page
 
 **Files:**
+
 - Create: `frontend/.env.example`
 - Create: `frontend/.prettierignore`
 - Create: `frontend/.prettierrc.json`
@@ -231,6 +236,7 @@ git commit -m "feat: scaffold FastAPI backend"
 - Create: `frontend/src/tests/setup.ts`
 
 **Interfaces:**
+
 - Consumes: browser DOM and Vite's standard development/runtime environment.
 - Produces: default-exported `App` component and the `npm run dev`, `build`, `lint`, `typecheck`, `format`, `format:check`, `test`, and `test:watch` scripts.
 
@@ -247,18 +253,22 @@ Use the official `react-ts` Vite template. Add Vitest, jsdom, Testing Library, `
 Create `frontend/src/app/App.test.tsx`:
 
 ```tsx
-import { render, screen } from '@testing-library/react'
+import { render, screen } from "@testing-library/react";
 
-import App from './App'
+import App from "./App";
 
-describe('App', () => {
-  it('identifies Careerflow and the completed foundation', () => {
-    render(<App />)
+describe("App", () => {
+  it("identifies Careerflow and the completed foundation", () => {
+    render(<App />);
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Careerflow' })).toBeInTheDocument()
-    expect(screen.getByText('Project foundation is ready.')).toBeInTheDocument()
-  })
-})
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Careerflow" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Project foundation is ready."),
+    ).toBeInTheDocument();
+  });
+});
 ```
 
 - [ ] **Step 4: Run the test and confirm it fails before the page exists**
@@ -307,11 +317,13 @@ git commit -m "feat: scaffold React frontend"
 ### Task 4: CI, roadmap, and contributor documentation
 
 **Files:**
+
 - Create: `.github/workflows/ci.yml`
 - Create: `docs/roadmap.md`
 - Modify: `README.md`
 
 **Interfaces:**
+
 - Consumes: frontend npm scripts, backend uv commands, `.nvmrc`, `.python-version`, and `infra/compose.yaml`.
 - Produces: CI gates and exact onboarding/verification instructions for contributors.
 
